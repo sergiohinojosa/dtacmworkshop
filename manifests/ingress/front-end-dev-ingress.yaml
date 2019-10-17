@@ -1,0 +1,15 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+ name: frontend-ingress
+ namespace: dev
+spec:
+ rules:
+   - host: dev.18.130.200.62.xip.io
+     http:
+       paths:
+         - path: /
+           backend:
+             serviceName: front-end
+             servicePort: 8080
+            

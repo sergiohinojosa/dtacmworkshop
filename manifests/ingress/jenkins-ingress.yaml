@@ -1,0 +1,15 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+ name: jenkins-ingress
+ namespace: cicd
+spec:
+ rules:
+   - host: jenkins.18.130.200.62.xip.io
+     http:
+       paths:
+         - path: /
+           backend:
+             serviceName: jenkins
+             servicePort: 8080
+            
