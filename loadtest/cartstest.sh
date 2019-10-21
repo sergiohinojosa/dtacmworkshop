@@ -1,5 +1,6 @@
-export CARTS_IP=$(kubectl describe svc carts -n dev | grep 'LoadBalancer Ingress:' | sed 's~LoadBalancer Ingress:[ \t]*~~')
-#export CARTS_URL="http:\/\/"$CARTS_IP":8080\/cart"
-
-sed -i "s/CARTS_URL_PLACEHOLDER/$CARTS_IP/g" carts_load1.jmx
-sed -i "s/CARTS_URL_PLACEHOLDER/$CARTS_IP/g" carts_load2.jmx
+# Using ingress for accessing all services in the microk8s environment 
+# See ingress folder for the definition of the services.
+export K8_IP=$(curl ifconfig.me)
+export CARTS_URL=http://carts.dev.$K8_IP.xip.io
+sed -i "s/CARTS_URL_PLACEHOLDER/$CARTS_URL/g" carts_load1.jmx
+sed -i "s/CARTS_URL_PLACEHOLDER/$CARTS_URL/g" carts_load2.jmx

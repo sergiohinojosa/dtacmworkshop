@@ -9,7 +9,9 @@ pipeline{
     stages{
         stage('Checkout code'){
             steps{
-                git 'https://github.com/dynatrace-acm/dtacmworkshop'
+                echo 'Checking out microk8s branch'
+                sh 'git clone https://github.com/sergiohinojosa/dtacmworkshop.git --branch feature/microk8s --single-branch branch'
+                sh 'mv branch/* . ; rm -rf branch'
             }
         }
         stage('Build Code') {
@@ -17,31 +19,29 @@ pipeline{
                 container('mvn'){
                     echo 'Code Building...'
                     script {
-                        sh 'mvn -v'
-                    }
-                    //sleep 20    
+                        echo 'Simulate compilation with maven mvn -v'
+						sh 'mvn -v'
+                    } 
                 }
             }
         }
-        stage('Build Image'){
+        stage('Build Docker Image'){
             steps{
                 container('docker'){
                     echo 'Image Building...'
                     script{
-                        sh 'docker'
+                        sh 'docker -v'
                     }
-                    //sleep 20
                 }
             }
         }
-        stage('Push Image to Repo'){
+        stage('Push Image to Registry'){
             steps{
                 container('docker'){
-                    echo 'Pushing Image...'
+                    echo 'Pushing Docker Image to registry...'
                     script{
-                        sh 'docker'
+                        sh 'docker -v'
                     }
-                    //sleep 20
                 }
             }
         }
@@ -58,12 +58,12 @@ pipeline{
                                 sh 'ls $WORKSPACE'
                                 sh 'kubectl apply -f $WORKSPACE/manifests/sockshop-app/dev/carts2.yml'
                                 echo "Waiting for carts service to start..."
-                                sleep 350
+                                sleep 20
                             } else {
                                 sh 'ls $WORKSPACE'
                                 sh 'kubectl apply -f $WORKSPACE/manifests/sockshop-app/canary/carts2-canary.yml'
                                 echo "Waiting for carts service to start..."
-                                sleep 350
+                                sleep 20
                             }
                         }
                     }
@@ -118,12 +118,12 @@ pipeline{
                                 sh 'ls $WORKSPACE'
                                 sh 'kubectl apply -f $WORKSPACE/manifests/sockshop-app/production/carts2.yml'
                                 echo "Waiting for carts service to start..."
-                                sleep 350
+                                sleep 20
                             } else {
                                 sh 'ls $WORKSPACE'
                                 sh 'kubectl apply -f $WORKSPACE/manifests/sockshop-app/canary/carts2-badbuild.yml'
                                 echo "Waiting for carts service to start..."
-                                sleep 350
+                                sleep 20
                             }
                         }
                                         }
