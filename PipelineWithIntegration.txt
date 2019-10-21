@@ -10,8 +10,7 @@ pipeline{
         stage('Checkout code'){
             steps{
                 echo 'Checking out microk8s branch'
-                sh 'git clone https://github.com/sergiohinojosa/dtacmworkshop.git --branch feature/microk8s --single-branch branch'
-                sh 'mv branch/* . ; rm -rf branch'
+                sh '[ -d .git ] && { git reset --hard HEAD ; cat .git/config ; } || { echo "cloning repo" ; git clone https://github.com/sergiohinojosa/dtacmworkshop.git --branch feature/microk8s --single-branch . ; } '
             }
         }
         stage('Build Code') {
