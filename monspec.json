@@ -6,6 +6,13 @@
 			"tags": "[Kubernetes]app:carts,[Kubernetes]stage:dev",
 			"upperWarning": 1000,
 			"upperSevere": 3000
-		}
+		},
+		{
+			"timeseriesId" : "com.dynatrace.builtin:service.failurerate",
+			"aggregation" : "avg",
+			"tags" : "[Kubernetes]app:carts,[Kubernetes]stage:dev",
+			"upperSevere" : 5.0,
+			"upperWarning" : 0.5
+        }
 	]
 }
